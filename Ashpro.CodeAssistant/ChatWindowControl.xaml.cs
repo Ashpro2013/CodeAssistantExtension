@@ -462,7 +462,7 @@ namespace Ashpro.CodeAssistant
         {
             StringBuilder sql = new StringBuilder();
             sql.Length = 0;
-            sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ash@Pro#";
+            sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ig79891";
             DataTable dt = new DataTable();
             using (SqlConnection connection = new SqlConnection(sConnectionString))
             {
@@ -649,7 +649,7 @@ namespace Ashpro.CodeAssistant
                 string sTable = string.Empty;
                 StringBuilder sql = new StringBuilder();
                 sql.Length = 0;
-                sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ash@Pro#";
+                sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ig79891";
                 DataTable dt = new DataTable();
                 using (SqlConnection connection = new SqlConnection(sConnectionString))
                 {
@@ -697,7 +697,7 @@ namespace Ashpro.CodeAssistant
             string sTable = string.Empty;
             StringBuilder sql = new StringBuilder();
             sql.Length = 0;
-            sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ash@Pro#";
+            sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ig79891";
             DataTable dt = new DataTable();
             using (SqlConnection connection = new SqlConnection(sConnectionString))
             {
@@ -739,7 +739,7 @@ namespace Ashpro.CodeAssistant
             string sTable = string.Empty;
             StringBuilder sql = new StringBuilder();
             sql.Length = 0;
-            sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ash@Pro#";
+            sConnectionString = "Data Source=" + txtServer.Text + ";Initial Catalog=" + cmbDatabases.Text + "; Integrated Security=FALSE;User Id=" + "sa" + ";Password=" + "ig79891";
             DataTable dt = new DataTable();
             using (SqlConnection connection = new SqlConnection(sConnectionString))
             {
@@ -829,11 +829,11 @@ namespace Ashpro.CodeAssistant
         {
             if (txtServer.Text != String.Empty)
             {
-                sConnectionString = $@"Data Source={txtServer.Text}; Initial Catalog=master;User ID=sa;Password=ash@Pro#; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
+                sConnectionString = $@"Data Source={txtServer.Text}; Initial Catalog=master;User ID=sa;Password=ig79891; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
             }
             else
             {
-                sConnectionString = $@"Data Source={Environment.MachineName}; Initial Catalog=master;User ID=sa;Password=ash@Pro#; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
+                sConnectionString = $@"Data Source={Environment.MachineName}; Initial Catalog=master;User ID=sa;Password=ig79891; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
             }
             Properties.Settings.Default.ConnectionString = sConnectionString;
             Properties.Settings.Default.Server = txtServer.Text;
@@ -1008,11 +1008,11 @@ namespace Ashpro.CodeAssistant
                 {
                     if (txtServer.Text != String.Empty)
                     {
-                        sConnectionString = $@"Data Source={txtServer.Text}; Initial Catalog={cmbDatabases.Text};User ID=sa;Password=ash@Pro#; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
+                        sConnectionString = $@"Data Source={txtServer.Text}; Initial Catalog={cmbDatabases.SelectedValue.ToString()};User ID=sa;Password=ig79891; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
                     }
                     else
                     {
-                        sConnectionString = $@"Data Source={Environment.MachineName}; Initial Catalog={cmbDatabases.Text};User ID=sa;Password=ash@Pro#; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
+                        sConnectionString = $@"Data Source={Environment.MachineName}; Initial Catalog={cmbDatabases.SelectedValue.ToString()};User ID=sa;Password=ig79891; Integrated Security=False; MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=True;Persist Security Info=False;";
                     }
                 }
                 using (SqlConnection connection = new SqlConnection(sConnectionString))
@@ -1042,13 +1042,39 @@ namespace Ashpro.CodeAssistant
             {
                 try
                 {
-                    string Query = "SELECT  COLUMN_NAME ColumnName,  DATA_TYPE SQLDType,"+
-                        "  case when CHARACTER_MAXIMUM_LENGTH is null then 0 else cast(CHARACTER_MAXIMUM_LENGTH as int) end as ColumnLength,"+
-                        "   case when NUMERIC_SCALE is null then 0 else cast(NUMERIC_SCALE as int) end as ColumnSubLength ,"+
-                        "   case when DATA_TYPE = 'int' then 'int' else case when DATA_TYPE = 'image' then 'byte[]' else "+
-                        "case when DATA_TYPE = 'decimal' then 'decimal' else case when DATA_TYPE = 'bit' then  'bool' else  " +
-                        "case when DATA_TYPE = 'datetime' then 'DateTime' else 'string'end end  end end end as CSharpDType "+
-                        $"FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{cmbTables.SelectedValue}'  ORDER BY ORDINAL_POSITION;";
+
+                    string Query = @"
+SELECT 
+    COLUMN_NAME AS ColumnName, 
+    DATA_TYPE AS SQLDType, 
+    CASE 
+        WHEN CHARACTER_MAXIMUM_LENGTH IS NULL THEN 0 
+        ELSE CAST(CHARACTER_MAXIMUM_LENGTH AS INT) 
+    END AS ColumnLength,
+    CASE 
+        WHEN NUMERIC_SCALE IS NULL THEN 0 
+        ELSE CAST(NUMERIC_SCALE AS INT) 
+    END AS ColumnSubLength,
+    IS_NULLABLE AS IsNullable,
+    CASE 
+        WHEN DATA_TYPE = 'int' THEN 
+            CASE WHEN IS_NULLABLE = 'YES' THEN 'int?' ELSE 'int' END
+        WHEN DATA_TYPE = 'decimal' THEN 
+            CASE WHEN IS_NULLABLE = 'YES' THEN 'decimal?' ELSE 'decimal' END
+        WHEN DATA_TYPE = 'bit' THEN 
+            CASE WHEN IS_NULLABLE = 'YES' THEN 'bool?' ELSE 'bool' END
+        WHEN DATA_TYPE IN ('datetime', 'date', 'smalldatetime', 'datetime2') THEN 
+            CASE WHEN IS_NULLABLE = 'YES' THEN 'DateTime?' ELSE 'DateTime' END
+        WHEN DATA_TYPE = 'image' THEN 
+            'byte[]'
+        ELSE 
+            CASE WHEN IS_NULLABLE = 'YES' THEN 'string?' ELSE 'string' END
+    END AS CSharpDType
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_NAME = '" + cmbTables.SelectedValue.ToString() + @"'
+ORDER BY ORDINAL_POSITION;
+";
+
                     db = new DBContext(sConnectionString);
                     entDetails = new List<Details>();
                     entDetails = db.Details(Query);
